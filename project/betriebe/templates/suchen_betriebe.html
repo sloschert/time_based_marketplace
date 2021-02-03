@@ -1,0 +1,14 @@
+{% extends "base_betriebe.html" %}
+
+{% block content2 %}
+
+<div class="section">
+  <div class="container">
+
+  {% from 'macros.html' import produktsuche %}
+  {{ produktsuche(form, results, 'main_betriebe') }}
+
+  </div>
+</div>
+
+{% endblock %}

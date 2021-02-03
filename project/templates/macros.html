@@ -1,0 +1,122 @@
+{% macro start_hilfe() %}
+
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <h1 class="title">
+          Was ist das hier?
+        </h1>
+        <div class="block content has-text-left">
+          <ul>
+            <li>Auf dieser Plattform kannst du Produkte und Dienstleistungen gegen Arbeitszeit tauschen.</li>
+            <li>Produkte kosten soviel Arbeitszeit, wie sie zur Herstellung brauchen.</li>
+          </ul>
+        </div>
+
+        <h1 class="title">
+          Wie funktioniert es?
+        </h1>
+
+        <div class="block content has-text-left">
+          <ul>
+            <li>Es gibt "Nutzer"-Accounts und "Betriebe"-Accounts.</li>
+            <ul>
+              <li>Als Arbeiter und Konsument brauchst du einen <strong>Nutzer-Account</strong>.<br>
+              Für deine
+              geleistete Arbeit bekommst du von deinem Betrieb Arbeitszeit überwiesen,
+              die du gegen Dienstleistungen oder Produkte
+              eintauschen kannst. </li>
+              <li>Wer Dienstleistungen oder Produkte anbieten will,
+              braucht einen <strong>Betriebe-Account</strong>.<br>
+              Mit diesem Account kannst du Mitarbeiter mit Hilfe
+              ihrer Nutzer-ID registrieren und berechnen, wieviel Arbeit in deinen Produkten steckt.</li>
+              <li>Gelegenheitsverkäufer, Freelancer oder Solo-Selbstständige
+                registrieren sowohl einen Nutzer- als auch
+              einen Betriebe-Account und fügen sich selbst als (einzigen) Mitarbeiter hinzu.</li>
+            </ul>
+          </ul>
+        </div>
+
+        <h1 class="title">
+          Wofür das Ganze?
+        </h1>
+
+        <div class="block content has-text-left">
+          <ul>
+            <li>Eine demokratische Form des Wirtschaftens braucht Transparenz.</li>
+            <li>In der kapitalistischen Wirtschaft ist unklar, weshalb
+              ein Produkt 10 und nicht 100 Euro kostet oder weshalb ein
+              Fußball-Profi in der gleichen Zeit so viel mehr als die Putzkraft "verdient".</li>
+            <li>Die Arbeitszeitrechnung schafft diese Transparenz. Diese App soll zeigen,
+            dass Arbeitszeitrechnung nicht nur mit Dienstleistungen, sondern auch mit Produkten klappt.</li>
+          </ul>
+        </div>
+    </div>
+</div>
+
+{% endmacro %}
+
+
+
+{% macro produktsuche(form, results, blueprint_name) %}
+
+<div class="columns is-centered">
+  <div class="column is-one-third">
+    <h1 class="title">
+      Produktsuche
+    </h1>
+    <div class="box">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="notification is-danger">{{ message }}  </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="post">
+        <div class="field">
+
+            <div class="control">
+              <div class="select is-large is-fullwidth">
+                {{ form.select }}
+              </div>
+            </div>
+            <p class="help">Suche in Name/Beschreibung/Kategorie</p>
+        </div>
+        <div class="field">
+          <div class="control">
+              {{ form.search(class_="input is-large") }}
+          </div>
+          <p class="help">Suchbegriff</p>
+        </div>
+        <button class="button is-block is-primary is-large is-fullwidth">
+          Suche
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% if results is defined and results|length %}
+<h1 class="title">
+  Ergebnisse
+</h1>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead><tr><th>Produktname</th><th>Betrieb</th><th>Kontakt</th>
+      <th>Beschreibung</th><th>Kategorie</th><th>Preis</th><th>Vorhanden</th><th>Details</th><th>Kaufen</th></tr>
+    </thead>
+      <tbody>
+        {% for res in results %}
+          <tr><td>{{ res.angebot_name }}</td>
+            <td>{{ res.betrieb_name }}</td><td>{{ res.email }}</td>
+            <td>{{ res.beschreibung }}</td><td>{{ res.kategorie }}</td>
+            <td>{{ res.preis|round(2) }} Std.</td><td>{{ res.vorhanden }}</td>
+            <td><a href="{{ url_for('%s.details' % blueprint_name, id=res.id) }}"><u>Details</u></a></td>
+            <td><a href="{{ url_for('%s.kaufen' % blueprint_name, id=res.id) }}"><u>Kaufen</u></a></td></tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% endmacro %}

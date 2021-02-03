@@ -1,0 +1,25 @@
+{% extends "base_nutzer.html" %}
+
+{% block content2 %}
+
+  <div class="table-container">
+    <h1 class="subtitle">PREISZUSAMMENSETZUNG</h1>
+    <figure class="image">
+        {{ piped|safe }}
+    </figure>
+  </div>
+
+  <div class="table-container">
+    <h1 class="subtitle">DETAILS PREISZUSAMMENSETZUNG</h1>
+      <div class="content">
+        {{ table_preiszus }}
+      </div>
+  </div>
+
+  <form method="post">
+    <a class="button is-primary" href="{{  url_for('main_nutzer.suchen') }}">
+      Zurück
+    </a>
+  </form>
+
+{% endblock %}
